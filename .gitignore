@@ -4,14 +4,10 @@
 
 ### 추가
 */.gitignore
-
 */.gitattributes
 */HELP.md
-
 */mvnw
-
 */mvnw.cmd
-
 */.mvn/wrapper/maven-wrapper.properties
 
 

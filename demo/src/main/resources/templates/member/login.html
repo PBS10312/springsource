@@ -7,5 +7,29 @@
   </head>
   <body>
     <h1>Login</h1>
+    <!-- post 와 get 차이 : get은 주소줄에 보임 -->
+    <form action="" method="post">
+      <div>
+        <label for="userid">아이디</label>
+        <input type="text" name="userid" id="userid" />
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input type="password" name="password" id="password" />
+      </div>
+      <div>
+        <button type="submit">로그인</button>
+      </div>
+    </form>
+    <ul id="result">
+      <!-- [[${loginDTO?.userid}]] 화면출력  중간에 ? 는 없을수도 있음을 말함-->
+      <!-- command 객체명 : 첫문자만 소문자로 바꿔서 사용 -->
+      <li>아이디 :[[${loginDTO?.userid}]]</li>
+      <li>비밀번호 :[[${loginDTO?.password}]]</li>
+      <!-- RedirectAttributes 로 가져온 값 출력 -->
+      <li>아이디 :[[${param.userid}]]</li>
+      <li>비밀번호 :[[${password}]]</li>
+    </ul>
+    <h3 th:text="${session.name1}"></h3>
   </body>
 </html>
