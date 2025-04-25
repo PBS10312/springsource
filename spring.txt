@@ -42,6 +42,16 @@ build : 프로젝트생성, 라이브러리 설정 , 코드작업, 컴파일 , �
 - 싱글톤 방식(객체는 하나만 생성)으로 객체 생성
 - @Controller , @Service , @Component
 
+
+Injection(주입)
+- @Controller , @Service , @Component 얘네를 통해서 생성된 객체를 언제,어디에 사용할 것인지를 알려주는 개념
+- @Autowired 를 통해 필요한 객체 위에 작성 (컨테이너가 관리하는 객체를 주입해 주세요)
+
+@Autowired      <- 테스트 클래스일때           클래스에 @RequiredArgsConstructor
+private MemoService memoService ;              == private final MemoService memoService;
+
+
+
 2) 경로 임의로 생성
     http://localhost:8080/ ==> Controller 파일의 메소드와 매핑
     uri 설계
@@ -152,10 +162,34 @@ th:href = "@{ex1(id=${dto.id})} : /를 붙이면 http://localhost:8080/ 다음 �
     @SequenceGenerator(name = "student_seq_gen", sequenceName = "student_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq_gen") //
 
+--------------------------------------------------------------------------------------------------------------
+날짜 어노테이션
+
+org.hibernate 제공
+@CreationTimestamp : 데이터를 삽입할때 자동으로 현재 시스템 날짜 시간 삽입
+@UpdateTimestamp : 데이터 삽입 + 수정시 자동으로 현재 시스템 날짜 시간 삽입
+
+org.springframework.data 제공
+@CreatedDate
+@LastModifiedDate
+
++ 설정작업 필요
+main이 있는 클래스에 @EnableJpaAuditing 얘를 부착
+Entity 클래스에 @EntityListeners(value = AuditingEntityListener.class) 얘를 부착
+------------------------------------------------------------------------------------------------------------------------
+Repository + Entity
+
+Repository 제공 메소드
+1) save () : insert , update
+2) findByid() : select(where)
+3) findAll() : 전체조회
+4) deleteByid() / delete() : 삭제
+5)
 
 
-
-
+- modelmapper : dto ==> entity , entity ==> dto 자동으로 처리
+ 1. RootConfig.java 작성
+ 2. 
 
 
 

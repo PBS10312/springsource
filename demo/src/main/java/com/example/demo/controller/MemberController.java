@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +14,7 @@ import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.MemberDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +28,20 @@ public class MemberController {
     // 회원가입 : /member/register
     // void 일때 templates/member/register.html 라는 의미를 가짐
     @GetMapping("/register")
-    public void getregister() {
+    public void getregister(@ModelAttribute("mDto") MemberDTO memberDTO) {
         log.info("회원가입");
     }
 
     @PostMapping("/register")
-    public String postregister(@ModelAttribute("mDTO") MemberDTO memberDTO, RedirectAttributes rttr) {
+    public String postregister(@ModelAttribute("mDto") @Valid MemberDTO memberDTO, BindingResult result,
+            RedirectAttributes rttr) {
         // @ToString 이 없으면 MemberDTO@43c4ee7d {}에 주소 형태로 나옴
         log.info("회원가입 요청{}", memberDTO);
+
+        // 유효성 검사 통과하지 못한다면 원래 입력 페이지로 돌아가기
+        if (result.hasErrors()) {
+            return "/member/register";
+        }
 
         // 로그인 페이지로 이동
         // redirect 방식으로 가면서 값을 보내고 싶다면?
