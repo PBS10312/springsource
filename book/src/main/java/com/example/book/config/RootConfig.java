@@ -10,7 +10,6 @@ public class RootConfig {
 
     @Bean
     ModelMapper getMapper() {
-
         ModelMapper modelMapper = new ModelMapper();
 
         modelMapper.getConfiguration()

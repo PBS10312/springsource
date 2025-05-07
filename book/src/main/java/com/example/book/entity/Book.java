@@ -15,18 +15,16 @@ import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@ToString
 @Builder
+@ToString
 @Setter
-
+@Getter
 @Table(name = "BOOKTBL")
 @Entity
 public class Book extends BaseEntity {
 
-    @Id
-    @Column()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long code;
 
     @Column(nullable = false)
@@ -37,5 +35,4 @@ public class Book extends BaseEntity {
 
     @Column(nullable = false)
     private int price;
-
 }
