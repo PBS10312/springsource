@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "board")
+@ToString(exclude = { "board", "replyer" })
 @Entity
 public class Reply extends BaseEntity {
 
@@ -30,10 +30,14 @@ public class Reply extends BaseEntity {
     @Column(nullable = false)
     private String text;
 
-    @Column(nullable = false)
-    private String replyer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member replyer;
 
     @JoinColumn(name = "board_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
+
+    public void changeText(String text) {
+        this.text = text;
+    }
 }

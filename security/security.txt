@@ -1,0 +1,91 @@
+spring security
+- 현재 프로젝트는 시큐리티 설정에 의해 움직임
+
+filter 를 통과해야 컨트롤러로 넘어감
+
+
+로그인 정보 없이는 모든 페이지 접근불가
+익명 사용자(anonymousUser)
+인증 사용자 (Authentication User) - 로그인 후
+username : 페이지에서 사용하는 아이디임
+
+- 비밀번호 암호화
+단방향 암호화 : 한번 암호화를 하면 본래 비밀번호를 찾을 수 없음
+
+-메소드
+permitAll() : 권한 필요 없음
+Authenticated() : 권한 (로그인 성공 후 부여되는 권한) 필요 함
+
+-로그인 페이지
+id에 해당하는 요소의 이름은 반드시 username(변경가능)
+사용자의 로그인 페이지를 사용하려면
+로그인 POST 작업은 하지 않는다 => 시큐리티가 처리
+=> get 을 제외한 모든 방법(post,put,delete)은  csrf 토큰을 요구함
+=> 타입리프에서는 action 에 경로 설정을 하면 csrf 토큰을 넣어줌
+로그인 성공 후 어디로 이동할 것인지 경로 지정을 하지 않으면 이전 url 로 되돌아감
+
+로그인 처리를 위한 Service 는 작성해야 함 : UserDetailsService 구현
+
+
+==========================================================
+소셜 계정 처리
+=> 테이블 저장함
+   email,pw
+==========================================================
+
+- 403 에러
+csrf 값 확인 : form에 action 값 적었는지 확인한다
+               axios , fetch => headers 에 값 추가했는지 확인할것
+
+
+-thyleaf security 표현하기
+ -  value = "${#authentication.principal.name}"
+
+ -  sec:authentication="name" : id 가져오기
+ -  sec:authentication="principal.authorities" : 권한 가져오기
+
+ -  sec:authorize="isAuthenticated()"
+ -  sec:authorize="hasRole('ROLE_ADMIN')"
+ -  sec:authorize="hasAnyRole({'ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'})"
+    hasAnyRole() : Role 여러 개 중에 하나만 만족한다면
+    hasRole() : Role 하나만 작성하고 그 Role 만족한다면
+
+
+
+http
+.authorizeHttpRequests(authorize -> authorize.requestMatchers("/assets/**", "/css/**", "/js/**", "/img/**").permitAll()
+.anyRequest().permitAll())
+
+- .anyRequest().permitAll() : 컨트롤러 메소드 단에서 제어
+
+
+====================================================================
+서버 : 스프링부트
+       컨트롤러 -> 서비스 -> 리포지토리
+       dto , entity
+
+화면 : 프로젝트마다 다름
+        jsp(레거시 프로젝트), 템플릿(thyleaf,.....) , react
+
+    jsp 는 thyleaf 와 유사
+          스프링부트에서는 jsp 는 기본 템플릿이 아님 => 설정 작업 필요
+====================================================================
+                            
+                              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
