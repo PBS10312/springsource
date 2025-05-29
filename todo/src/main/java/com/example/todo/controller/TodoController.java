@@ -37,7 +37,7 @@ public class TodoController {
 
     @GetMapping("/read")
     public void getRead(Long id, Model model) {
-        log.info("조회 {}", id);
+        log.info("조회 {}", id);    
         ToDoDTO dto = todoService.read(id);
         model.addAttribute("dto", dto);
     }
