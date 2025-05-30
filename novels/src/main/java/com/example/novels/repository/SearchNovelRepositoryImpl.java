@@ -51,7 +51,7 @@ public class SearchNovelRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Object[]> list(Pageable pageable) {
+    public Page<Object[]> list(Long gid, String keyword, Pageable pageable) {
         QNovel novel = QNovel.novel;
         QGenre genre = QGenre.genre;
         QGrade grade = QGrade.grade;
@@ -66,11 +66,24 @@ public class SearchNovelRepositoryImpl extends QuerydslRepositorySupport impleme
 
         JPQLQuery<Tuple> tuple = query.select(novel, genre, ratingAvg);
 
-        // 검색
         BooleanBuilder builder = new BooleanBuilder();
         BooleanExpression expression = novel.id.gt(0);
         builder.and(expression);
 
+        // where n1_0.novel_id>? and genre_id = 3 and title like '' or author like ''
+
+        // 검색
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        if (gid != 0) {
+            conditionBuilder.and(novel.genre.id.eq(gid));
+        }
+        if (!keyword.isEmpty()) {
+            conditionBuilder.and(novel.title.contains(keyword));
+            conditionBuilder.or(novel.author.contains(keyword));
+        }
+        builder.and(conditionBuilder);
+
+        tuple.where(builder);
         // Sort 생성
         Sort sort = pageable.getSort();
         // sort 기준이 여러개 일 수 있어서
